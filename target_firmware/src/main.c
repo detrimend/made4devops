@@ -1,20 +1,19 @@
-#include <stdio.h>
-#include <util/delay.h>
-#include <avr/io.h>
-#include "serial_com.h"
+#include <stdio.h> 
+#include <util/delay.h> 
+#include <avr/io.h> 
+#include "serial_com.h" 
+int main() 
+{ 
+    // Initialize the UART for serial communication 
+    uart_init(); 
 
-int main()
-{
-    unsigned int counter = 0;
-    uart_init();
-    DDRB = 0xff;
+    // Set prescaler to /1024 
+    TCCR1B |= (1<<CS12) | (1<<CS10); 
 
-    do
-    {
-        PORTB = 0xff;
-        __builtin_avr_delay_cycles(4000000);
-        PORTB = 0x0;
-        __builtin_avr_delay_cycles(4000000);
-       printf("Counter: %u\n\r", counter++);
-    } while (1);
+    while(1) 
+    { 
+        printf("TCNT1 %u\n\r", TCNT1); 
+        _delay_ms(500); 
+    } 
+    // tager cirka 4 sekunder at nå 65000
 }
